@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IoT Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>IoT Dashboard</h1>
+
+    <div class="sensor-data">
+      <h2>Sensor Data</h2>
+      <p>Temperature: <span id="temperature">Loading...</span> °C</p>
+      <p>Humidity: <span id="humidity">Loading...</span> %</p>
+    </div>
+
+    <div class="relay-control">
+      <button id="relay-on" class="on">Turn Relay ON</button>
+      <button id="relay-off" class="off">Turn Relay OFF</button>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+  </body>
+</html>
