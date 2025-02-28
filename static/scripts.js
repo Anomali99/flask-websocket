@@ -1,9 +1,13 @@
 // Menghubungkan ke WebSocket server
-const ws = new WebSocket(`ws://${window.location.hostname}:5000/sensor_data`);
+// const url = `ws://${window.location.hostname}:5000/sensor_data`
+const url = "wss://chatserver.anomali99.my.id/sensor_data";
+const ws = new WebSocket(url);
 
 // Elemen DOM untuk menampilkan data
 const temperatureEl = document.getElementById("temperature");
 const humidityEl = document.getElementById("humidity");
+const luxEl = document.getElementById("lux");
+const moistureEl = document.getElementById("moisture");
 const relayOnBtn = document.getElementById("relay-on");
 const relayOffBtn = document.getElementById("relay-off");
 
@@ -12,6 +16,8 @@ ws.onmessage = (event) => {
   const data = JSON.parse(event.data); // Data JSON dari server
   temperatureEl.textContent = data.temperature || "N/A";
   humidityEl.textContent = data.humidity || "N/A";
+  luxEl.textContent = data.lux || "N/A";
+  moistureEl.textContent = data.moisture || "N/A";
 };
 
 // Kontrol relay dengan HTTP POST
