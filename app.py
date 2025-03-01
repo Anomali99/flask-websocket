@@ -6,8 +6,14 @@ import json, firebase_admin
 
 app = Flask(__name__)
 sock = Sock(app)
-CORS(app)
-cred = credentials.Certificate("serviceAccountKey.json")
+CORS(app, resources={
+    r"/*": {
+        "origins": ["https://chat.anomali99.my.id"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "methods": ["GET", "POST", "OPTIONS"]
+    }
+})
+cred = credentials.Certificate("./serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 sensor_data = {"moisture": 0, "temperature": 0, "humidity": 0, "lux": 0}
@@ -25,10 +31,10 @@ def send_notification():
         
         message = messaging.Message(
             notification=messaging.Notification(
-                title=body['title'],
-                body=body['message']
+                title=body['title'].strip(),
+                body=body['message'].strip()
             ),
-            token=body['targetToken']
+            token=body['targetToken'].strip()
         )
 
         response = messaging.send(message)
@@ -41,6 +47,7 @@ def send_notification():
         })
         
     except Exception as e:
+        print(e)
         return jsonify({
             "data":{
                 "message" : "Failed send notification",
@@ -95,4 +102,4 @@ def get_sensor_data(ws):
         ws_clients.remove(ws)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=False, port=5000)
